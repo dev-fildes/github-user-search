@@ -17,3 +17,4 @@ Utilizes the [Github API](https://docs.github.com/en/free-pro-team@latest/rest) 
 2. Swap `CSS` files to `Sass` files.
 3. Add more styling to profile pages.
 4. Add more info to profile pages (ie. stars count)
+5. Set up API rate-limit error handling. (API search only allows for 30/hour)
