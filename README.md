@@ -1,7 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Github User Search
-Search users on Github. [Github User Search](https://dev-fildes.github.io/github-user-search/)
+[Search for users on Github](https://dev-fildes.github.io/github-user-search/)
 
 Utilizes the [Github API](https://docs.github.com/en/free-pro-team@latest/rest) with [Octokit/Rest](https://octokit.github.io/rest.js/v18) and [Parse-Link-Header](https://github.com/thlorenz/parse-link-header).
 
