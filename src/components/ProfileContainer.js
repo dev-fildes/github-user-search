@@ -23,16 +23,21 @@ const ProfileContainer = (props) => {
 		})
 		.then(response => {
 			setRepos(response.data.length);
-})
+		})
 	}, []);
 
 	return(
-        <div className="profileContainer">
-            <img src={user.avatar_url} width="100px;" alt="User Icon"/>
-            <h2>{user.login}</h2>
-            <h3>{repos} Repos • {user.followers} Followers • {user.following} Followed</h3>
-            <button onClick={() => history.goBack()} className="pagination-button-return">Back</button>
-        </div>
+		<div className="profileContainer">
+			<button onClick={() => history.goBack()} className="pagination-button-return">Back</button>
+			<img src={user.avatar_url} width="100px;" alt="User Icon"/>
+			<h2>{user.login}</h2>
+			<div className="profileInfo">
+				<h3><i className="fas fa-code"></i> {repos} Repos <i className="fas fa-users"></i> {user.followers} Followers <i className="fas fa-people-arrows"></i> {user.following} Followed</h3>
+				<div className="user-bio">
+					<p> {user.bio}</p>
+				</div>
+			</div>
+		</div>
 		)
 }
 export default ProfileContainer;
