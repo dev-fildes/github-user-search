@@ -25,7 +25,7 @@ useEffect(() => {
 	
 
 	return(
-        <Link to={"profile/" + user.login}>
+        <Link to={"/github-user-search/profile/" + user.login}>
         <div className="usercard-main">
             <img src={user.avatar_url} alt="user's icon" className="userimg" width="100px"/>
             <div id="userlink">
