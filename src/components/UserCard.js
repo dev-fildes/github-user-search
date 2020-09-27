@@ -21,7 +21,7 @@ useEffect(() => {
 	.then(response => {
 		setStars(response.data.length);
 	})
-}, [followers]);
+}, []);
 	
 
 	return(
