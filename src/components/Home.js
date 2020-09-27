@@ -52,7 +52,7 @@ const getUserList = () => {
   octokit.search.users({
     q: `${searchQuery}`,
     page: `${currentPage}`,
-    per_page: 10
+    per_page: 5
   })
   .then(response => {
     let parsed = parse(response.headers.link)
