@@ -10,6 +10,7 @@ const UserCard = (props) => {
 	const user = props.account;
 	const [followers, setFollowers] = useState(null);
 	const [stars, setStars] = useState(null);
+	const [error, setError] = useState([]);
 
 	useEffect(() => {
 		const rate_limit = async() => {
@@ -32,7 +33,6 @@ const UserCard = (props) => {
 
 	}, []);
 	
-
 	return(
         <Link to={"/github-user-search/profile/" + user.login}>
         <div className="usercard-main">
