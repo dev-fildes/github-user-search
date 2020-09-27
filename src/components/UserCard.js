@@ -30,8 +30,10 @@ const UserCard = (props) => {
 				})
 			}
 		};
-
+	rate_limit();
 	}, []);
+	
+
 	
 	return(
         <Link to={"/github-user-search/profile/" + user.login}>
