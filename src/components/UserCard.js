@@ -8,7 +8,8 @@ const UserCard = (props) => {
 		auth: process.env.PRIVATE_KEY,
 		userAgent: 'userSearch v0' });
 	const user = props.account;
-	const [profileInfo, setProfileInfo] = useState([]);
+	const [bio, setBio] = useState('');
+	const [profile, setProfile] = useState([])
 	const [followers, setFollowers] = useState(null);
 	const [stars, setStars] = useState(null);
 	const [error, setError] = useState([]);
@@ -25,20 +26,10 @@ const UserCard = (props) => {
 				octokit.request(`GET /users/${props.account.login}`, {
 					username: props.account.login,
 				}).then(response => {
-					if(response.data.bio !== null) {
-						setProfileInfo(response.data.bio)
-					} 
-				});
-				octokit.repos.listForUser({
-					username: props.account.login
-				})
-				.then(response => {
-					setRepos(response.data.length);
-				});
-				octokit.users.listFollowersForUser({
-					username: user.login,
-				}).then(response => {
-					setFollowers(response.data.length);
+					setProfile(response.data)
+					if(response.data.bio !== null && response.data.bio.length > 0) {
+						setBio(response.data.bio)
+					}
 				});
 				octokit.request(`GET /users/${user.login}/starred`)
 				.then(response => {
@@ -50,38 +41,37 @@ const UserCard = (props) => {
 	}, []);
 
 	let biohtml;
-	if(profileInfo.length > 0) {
+	if(bio.length > 0) {
 		biohtml = <div className="profileInfo">
-		{profileInfo}
+		{bio}
 		</div>
-
 	}
+
 	return(
         <a href={user.html_url}>
-            <div className="usercard-main">
-                <img src={user.avatar_url} alt="user's icon" className="userimg" width="100px"/>
-                <div id="userlink">
-                    {user.login}
-                </div>
-                <div className="statistics">
-                    <div className="repos">
-                        <i className="fas fa-code"></i>   
-                        {repos}
-                    </div>                      
-                    <div className="followers" title="Followers" alt="followers">
-                        
-                     <i class="fas fa-people-arrows"></i>
-                     {followers}
-                 </div>
-                 <div className="stars" title="stars" alt="stars">
-                    <i className="fas fa-star"></i>
-                    {stars}
-                </div>
-                   </div>
-                {biohtml}
-         
+    <div className="usercard-main">
+        <img src={user.avatar_url} alt="user's icon" className="userimg" width="100px"/>
+        <div id="userlink">
+            {user.login}
         </div>
-    </a>
+        <div className="statistics">
+            <div className="repos">
+                <i className="fas fa-code"></i>   
+                {profile.public_repos}
+            </div>                      
+            <div className="followers" title="Followers" alt="followers">
+                
+               <i className="fas fa-people-arrows"></i>
+               {profile.followers}
+           </div>
+           <div className="stars" title="stars" alt="stars">
+            <i className="fas fa-star"></i>
+            {stars}
+        </div>
+    </div>
+    {biohtml}
+</div>
+</a>
 		)
 }
 export default UserCard;
