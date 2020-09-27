@@ -11,7 +11,7 @@ const App = () => {
     <div className="App">
       <Router>
         <Route exact path="/github-user-search" component={Home}/>
-        <Route exact path="/profile/:username" component={ProfileContainer}/>
+        <Route exact path="/github-user-search/profile/:username" component={ProfileContainer}/>
       </Router>
     </div>
     );
