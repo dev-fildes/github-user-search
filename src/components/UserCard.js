@@ -48,7 +48,7 @@ const UserCard = (props) => {
 	}
 
 	return(
-        <a href={user.html_url}>
+        <a href={user.html_url} target="_blank">
     <div className="usercard-main">
         <img src={user.avatar_url} alt="user's icon" className="userimg" width="100px"/>
         <div id="userlink">
