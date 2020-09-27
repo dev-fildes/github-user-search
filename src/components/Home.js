@@ -118,6 +118,7 @@ if(loading > (3)) return "Loading.."
                     onChange={onChangeInput}
                     className="search"
                     placeholder="Search Users.."
+                    required
                     />
                 </label>
 
