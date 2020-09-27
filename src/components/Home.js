@@ -58,13 +58,15 @@ const getUserList = () => {
     let parsed = parse(response.headers.link)
     setLoading(false)
     setTotal(response.data.total_count)
-    if(parsed.next !== null) {
-      setNextPage(prevState => parsed.next.page)
-      setLast(parsed.last.page)
-    };
-    if(parsed.prev) {
-      setPrevPage(parsed.prev.page)
-    };
+    if(parsed !== null) {
+      if(parsed.next !== null) {
+        setNextPage(prevState => parsed.next.page)
+        setLast(parsed.last.page)
+      }
+      if(parsed.prev && parsed.prev !== null) {
+        setPrevPage(parsed.prev.page)
+      }
+    }
     setUsers(response.data.items.map(acct => {
       return(
         <UserCard
@@ -100,50 +102,50 @@ if(loading > (3)) return "Loading.."
 
   return(
     <div className="main">
-    <div className="search-header">
+        <div className="search-header">
 
-        <div className="github-logo">
-            <i className="fab fa-github fa-10x"></i>
+            <div className="github-logo">
+                <i className="fab fa-github fa-10x"></i>
+            </div>
+
+            <h1>Search Github Users</h1>
+
+            <form onSubmit={onSubmit}>
+                <label>
+                    <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={onChangeInput}
+                    className="search"
+                    placeholder="Search Users.."
+                    />
+                </label>
+
+                <button 
+                type="submit"
+                className="fas fa-search"
+                id="submit-button"
+                />
+            </form>
+
+            <br/>
+
+            {error !== undefined ? <ErrorList errors={error} /> : null}
+
         </div>
 
-        <h1>Search Github Users</h1>
-        
-        <form onSubmit={onSubmit}>
-            <label>
-                <input
-                type="text"
-                value={searchQuery}
-                onChange={onChangeInput}
-                className="search"
-                placeholder="Search Users.."
-                />
-            </label>
+        <div className="returned-info">
+            {total_users}
 
-            <button 
-            type="submit"
-            className="fas fa-search"
-            id="submit-button"
+            {users}
+
+            {page_total}
+            <Pagination
+            gotoNextPage={nextPage ? gotoNextPage : null}
+            gotoPrevPage={prevPage ? gotoPrevPage : null}
             />
-        </form>
-        
-        <br/>
-
-        {error !== undefined ? <ErrorList errors={error} /> : null}
-        
+        </div>
     </div>
-
-    <div className="returned-info">
-        {total_users}
-
-        {users}
-
-        {page_total}
-        <Pagination
-        gotoNextPage={nextPage ? gotoNextPage : null}
-        gotoPrevPage={prevPage ? gotoPrevPage : null}
-        />
-    </div>
-</div>
     )
 };
 export default Home
