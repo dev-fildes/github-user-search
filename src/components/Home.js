@@ -31,7 +31,7 @@ const Home = () => {
 
  const onSubmit = (e) => {
   e.preventDefault();
-  getUserList();
+  rate_limit();
 };
 
 const isFirstRun = useRef(true);
@@ -40,8 +40,19 @@ useEffect(() => {
     isFirstRun.current = false;
     return;
   }
-  getUserList();
+  rate_limit();
 }, [currentPage]);
+
+const rate_limit = async() => {
+  let response = await octokit.request('GET /rate_limit')
+  debugger
+  if (response.data.rate.remaining === 0) {
+    let errors = "Error: Github API Rate-limit exceeded, please try back in 30 minutes."
+    setError(errors)
+  } else {
+    getUserList();
+  }
+};
 
 const getUserList = () => { 
   if(searchQuery === "") {
@@ -49,34 +60,35 @@ const getUserList = () => {
    setError(errors)
  } else {
   setError('')
-  octokit.search.users({
-    q: `${searchQuery}`,
-    page: `${currentPage}`,
-    per_page: 5
-  })
-  .then(response => {
-    let parsed = parse(response.headers.link)
-    setLoading(false)
-    setTotal(response.data.total_count)
-    if(parsed !== null) {
-      if(parsed.next !== null) {
-        setNextPage(prevState => parsed.next.page)
-        setLast(parsed.last.page)
-      }
-      if(parsed.prev && parsed.prev !== null) {
-        setPrevPage(parsed.prev.page)
-      }
+}
+octokit.search.users({
+  q: `${searchQuery}`,
+  page: `${currentPage}`,
+  per_page: 5
+})
+.then(response => {
+  let parsed = parse(response.headers.link)
+  setLoading(false)
+  setTotal(response.data.total_count)
+  if(parsed !== null) {
+    if(parsed.next !== null) {
+      setNextPage(prevState => parsed.next.page)
+      setLast(parsed.last.page)
     }
-    setUsers(response.data.items.map(acct => {
-      return(
-        <UserCard
-        key={acct.id}
-        account={acct}
-        />)
-    }));
-  })
-  .catch(e => console.log(e))
-}};
+    if(parsed.prev && parsed.prev !== null) {
+      setPrevPage(parsed.prev.page)
+    }
+  }
+  setUsers(response.data.items.map(acct => {
+    return(
+      <UserCard
+      key={acct.id}
+      account={acct}
+      />)
+  }));
+})
+.catch(e => console.log(e))
+};
 
 if(loading > (3)) return "Loading.."
 
