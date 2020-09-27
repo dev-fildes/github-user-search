@@ -25,7 +25,7 @@ label:before {
   top: 2px;
   bottom: 0;
   width: 20px;
-  background:url(/src/users.svg);
+  background:url('../users.svg');
   background-repeat: no-repeat;
 }
 
