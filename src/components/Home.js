@@ -45,7 +45,6 @@ useEffect(() => {
 
 const rate_limit = async() => {
   let response = await octokit.request('GET /rate_limit')
-  debugger
   if (response.data.rate.remaining === 0) {
     let errors = "Error: Github API Rate-limit exceeded, please try back in 30 minutes."
     setError(errors)
