@@ -46,7 +46,7 @@ useEffect(() => {
 const rate_limit = async() => {
   let response = await octokit.request('GET /rate_limit')
   if (response.data.rate.remaining === 0) {
-    let errors = "Error: Github API Rate-limit exceeded, please try back in 30 minutes."
+    let errors = "Error: Github API rate-limit exceeded, please try back in 30 minutes."
     setError(errors)
   } else {
     getUserList();
@@ -63,14 +63,14 @@ const getUserList = () => {
 octokit.search.users({
   q: `${searchQuery}`,
   page: `${currentPage}`,
-  per_page: 5
+  per_page: 2
 })
 .then(response => {
   let parsed = parse(response.headers.link)
   setLoading(false)
   setTotal(response.data.total_count)
   if(parsed !== null) {
-    if(parsed.next !== null) {
+    if(parsed.next !== null && parsed.next !== undefined) {
       setNextPage(prevState => parsed.next.page)
       setLast(parsed.last.page)
     }
