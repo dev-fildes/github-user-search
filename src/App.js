@@ -10,7 +10,7 @@ const App = () => {
   return (
     <div className="App">
       <Router>
-        <Route exact path="/user-search" component={Home}/>
+        <Route exact path="/github-user-search" component={Home}/>
         <Route exact path="/profile/:username" component={ProfileContainer}/>
       </Router>
     </div>
