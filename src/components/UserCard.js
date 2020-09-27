@@ -11,17 +11,26 @@ const UserCard = (props) => {
 	const [followers, setFollowers] = useState(null);
 	const [stars, setStars] = useState(null);
 
-useEffect(() => {
-	octokit.users.listFollowersForUser({
-		username: user.login,
-	}).then(response => {
-		setFollowers(response.data.length);
-	});
-	octokit.request(`GET /users/${user.login}/starred`)
-	.then(response => {
-		setStars(response.data.length);
-	})
-}, []);
+	useEffect(() => {
+		const rate_limit = async() => {
+			let response = await octokit.request('GET /rate_limit')
+			if (response.data.rate.remaining === 0) {
+				let errors = "Error: Github API Rate-limit exceeded, please try back in 30 minutes."
+				setError(errors)
+			} else {
+				octokit.users.listFollowersForUser({
+					username: user.login,
+				}).then(response => {
+					setFollowers(response.data.length);
+				});
+				octokit.request(`GET /users/${user.login}/starred`)
+				.then(response => {
+					setStars(response.data.length);
+				})
+			}
+		};
+
+	}, []);
 	
 
 	return(
